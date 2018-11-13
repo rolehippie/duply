@@ -1,0 +1,93 @@
+- name: install packages
+  with_items:
+    - duply
+    - python-paramiko
+    - lftp
+    - cronic
+    - ftp
+  package:
+    name: '{{ item }}'
+    state: present
+  tags:
+    - duply
+
+- name: create dir
+  with_items: '{{ duply_profiles }}'
+  file:
+    path: /etc/duply/{{ item.name }}
+    mode: 0700
+    state: '{% if item.state | default("present") == "present" %}directory{% else %}absent{% endif %}'
+  tags:
+    - duply
+
+- name: write config
+  with_items: '{{ duply_profiles }}'
+  template:
+    src: config.j2
+    dest: /etc/duply/{{ item.name }}/conf
+    mode: 0600
+    state: '{{ item.state | default("present") }}'
+  tags:
+    - duply
+
+- name: config exclude
+  with_items: '{{ duply_profiles }}'
+  template:
+    src: exclude.j2
+    dest: /etc/duply/{{ item.name }}/exclude
+    mode: 0600
+    state: '{{ item.state | default("present") }}'
+  tags:
+    - duply
+
+- name: write pre
+  with_items: '{{ duply_profiles }}'
+  when: item.pre | default(False)
+  copy:
+    content: '{{ item.pre }}'
+    dest: /etc/duply/{{ item.name }}/pre
+    mode: 0700
+  tags:
+    - duply
+
+- name: drop pre
+  with_items: '{{ duply_profiles }}'
+  when: item.pre | default('') == ''
+  file:
+    path: /etc/duply/{{ item.name }}/pre
+    state: absent
+  tags:
+    - duply
+
+- name: write post
+  with_items: '{{ duply_profiles }}'
+  when: item.post | default(False)
+  copy:
+    content: '{{ item.post }}'
+    dest: /etc/duply/{{ item.name }}/post
+    mode: 0700
+  tags:
+    - duply
+
+- name: drop post
+  with_items: '{{ duply_profiles }}'
+  when: item.post | default('') == ''
+  file:
+    path: /etc/duply/{{ item.name }}/post
+    state: absent
+  tags:
+    - duply
+
+- name: write cronjob
+  with_items: '{{ duply_profiles }}'
+  cron:
+    name: backup {{ item.name }}
+    minute: '{{ item.minute | default(duply_default_minute) }}'
+    hour: '{{ item.hour | default(duply_default_hour) }}'
+    day: '{{ item.day | default(duply_default_day) }}'
+    month: '{{ item.month | default(duply_default_month) }}'
+    weekday: '{{ item.weekday | default(duply_default_weekday) }}'
+    job: cronic duply {{ item.name }} {{ item.command | default(duply_default_command) }}
+    state: '{{ item.state | default("present") }}'
+  tags:
+    - duply

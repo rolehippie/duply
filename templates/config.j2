@@ -1,0 +1,10 @@
+GPG_KEY="disabled"
+
+TARGET="{{ item.target | default(duply_target) }}/{{ inventory_hostname }}/{{ item.name }}"
+SOURCE="{{ item.source | default("/") }}"
+
+MAX_AGE="{{ item.max_age | default(duply_default_max_age) }}"
+MAX_FULL_BACKUPS="{{ item.max_full | default(duply_default_max_full) }}"
+VERBOSITY="{{ item.verbosity | default(duply_default_verbosity) }}"
+
+DUPL_PARAMS="$DUPL_PARAMS --volsize {{ item.volsize | default(duply_default_volsize) }}"

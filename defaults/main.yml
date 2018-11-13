@@ -1,0 +1,13 @@
+duply_profiles: []
+duply_target:
+
+duply_default_minute: 5
+duply_default_hour: 5
+duply_default_day: "*"
+duply_default_month: "*"
+duply_default_weekday: "*"
+duply_default_command: full+purgeFull --force
+duply_default_max_age: 1M
+duply_default_max_full: 1
+duply_default_verbosity: 1
+duply_default_volsize: 1024

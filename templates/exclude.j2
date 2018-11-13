@@ -1,0 +1,6 @@
+{% for include in item.includes|default([]) -%}
++ {{ include }}
+{% endfor -%}
+{% for exclude in item.excludes|default(["**"]) -%}
+- {{ exclude }}
+{% endfor -%}
