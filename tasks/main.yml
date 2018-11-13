@@ -22,6 +22,7 @@
 
 - name: write config
   with_items: '{{ duply_profiles }}'
+  when: item.state | default("present") == "present"
   template:
     src: config.j2
     dest: /etc/duply/{{ item.name }}/conf
@@ -30,13 +31,32 @@
   tags:
     - duply
 
-- name: config exclude
+- name: drop config
   with_items: '{{ duply_profiles }}'
+  when: item.state | default("present") == "absent"
+  file:
+    path: /etc/duply/{{ item.name }}/conf
+    state: absent
+  tags:
+    - duply
+
+- name: write exclude
+  with_items: '{{ duply_profiles }}'
+  when: item.state | default("present") == "present"
   template:
     src: exclude.j2
     dest: /etc/duply/{{ item.name }}/exclude
     mode: 0600
     state: '{{ item.state | default("present") }}'
+  tags:
+    - duply
+
+- name: drop exclude
+  with_items: '{{ duply_profiles }}'
+  when: item.state | default("present") == "absent"
+  file:
+    path: /etc/duply/{{ item.name }}/exclude
+    state: absent
   tags:
     - duply
 
