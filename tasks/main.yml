@@ -27,7 +27,6 @@
     src: config.j2
     dest: /etc/duply/{{ item.name }}/conf
     mode: 0600
-    state: '{{ item.state | default("present") }}'
   tags:
     - duply
 
@@ -47,7 +46,6 @@
     src: exclude.j2
     dest: /etc/duply/{{ item.name }}/exclude
     mode: 0600
-    state: '{{ item.state | default("present") }}'
   tags:
     - duply
 
