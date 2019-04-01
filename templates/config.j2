@@ -1,3 +1,7 @@
+{% for dictionary in item.variables | default(duply_default_variables) %}{% for key in dictionary %}
+export {{ key | upper }}="{{ dictionary[key] }}"
+{% endfor %}{% endfor %}
+
 GPG_KEY="disabled"
 
 TARGET="{{ item.target | default(duply_target) }}/{{ inventory_hostname }}/{{ item.name }}"
