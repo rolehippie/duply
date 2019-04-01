@@ -2,6 +2,7 @@
   with_items:
     - duply
     - python-paramiko
+    - python-boto
     - lftp
     - cronic
     - ftp
