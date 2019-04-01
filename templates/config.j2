@@ -1,6 +1,6 @@
-{% for dictionary in item.variables | default(duply_default_variables) %}{% for key in dictionary %}
-export {{ key | upper }}="{{ dictionary[key] }}"
-{% endfor %}{% endfor %}
+{% for variable in item.variables | default(duply_default_variables) %}
+export {{ variable.key | upper }}="{{ variable.value }}"
+{% endfor %}
 
 GPG_KEY="disabled"
 
