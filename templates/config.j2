@@ -2,7 +2,8 @@
 export {{ variable.key | upper }}="{{ variable.value }}"
 {% endfor %}
 
-GPG_KEY="disabled"
+GPG_KEY="{{ item.gpg_key | default(duply_default_gpg_key) }}"
+GPG_PW="{{ item.gpg_passwd | default(duply_default_gpg_passwd) }}"
 
 TARGET="{{ item.target | default(duply_target) }}/{{ inventory_hostname }}/{{ item.name }}"
 SOURCE="{{ item.source | default("/") }}"

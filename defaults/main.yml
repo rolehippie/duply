@@ -1,6 +1,8 @@
 duply_profiles: []
 duply_target:
 
+duply_default_gpg_key: disabled
+duply_default_gpg_passwd:
 duply_default_minute: 5
 duply_default_hour: 5
 duply_default_day: "*"
