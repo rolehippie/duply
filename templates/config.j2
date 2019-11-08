@@ -4,6 +4,7 @@ export {{ variable.key | upper }}="{{ variable.value }}"
 
 GPG_KEY="{{ item.gpg_key | default(duply_default_gpg_key) }}"
 GPG_PW="{{ item.gpg_passwd | default(duply_default_gpg_passwd) }}"
+GPG_OPTS="{{ item.gpg_opts | default(duply_default_gpg_opts) }}"
 
 TARGET="{{ item.target | default(duply_target) }}/{{ inventory_hostname }}/{{ item.name }}"
 SOURCE="{{ item.source | default("/") }}"
