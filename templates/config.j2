@@ -8,6 +8,9 @@ GPG_OPTS="{{ item.gpg_opts | default(duply_default_gpg_opts) }}"
 
 TARGET="{{ item.target | default(duply_target) }}/{{ inventory_hostname }}/{{ item.name }}"
 SOURCE="{{ item.source | default("/") }}"
+{% if item.arch_dir | default(False) %}
+ARCH_DIR="{{ item.arch_dir }}"
+{% endif %}
 
 MAX_AGE="{{ item.max_age | default(duply_default_max_age) }}"
 MAX_FULL_BACKUPS="{{ item.max_full | default(duply_default_max_full) }}"

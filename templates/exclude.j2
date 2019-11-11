@@ -1,3 +1,6 @@
+{% for exclude_first in item.excludes_first|default([]) -%}
+- {{ exclude_first }}
+{% endfor -%}
 {% for include in item.includes|default([]) -%}
 + {{ include }}
 {% endfor -%}
