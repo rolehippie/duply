@@ -1,4 +1,3 @@
-#jinja2: lstrip_blocks: True
 {% for variable in item.variables | default(duply_default_variables) %}
 export {{ variable.key | upper }}="{{ variable.value }}"
 {% endfor %}
@@ -9,7 +8,7 @@ GPG_OPTS="{{ item.gpg_opts | default(duply_default_gpg_opts) }}"
 
 TARGET="{{ item.target | default(duply_target) }}/{{ inventory_hostname }}/{{ item.name }}"
 SOURCE="{{ item.source | default("/") }}"
-{% if item.arch_dir is defined and item.arch_dir %}
+{% if item.arch_dir | default(False) %}
 ARCH_DIR="{{ item.arch_dir }}"
 {% endif %}
 
