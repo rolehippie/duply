@@ -1,17 +1,81 @@
+# Standards: 0.1
+---
+# @var duply_profiles:description: List of profile definitions
+# @var duply_profiles:example: >
+# duply_profiles:
+#   - name: owncloud
+#     includes:
+#       - /var/lib/owncloud
+#   - name: external
+#     target: ftp://username:p455w0rd@ftp.example.com
+#     command: full+verify+purge --force
+#     gpg_key: 52DCE5AE1FC80340A33894F5D583668622CDE10E
+#     gpg_passwd: p455w0rd
+#     max_age: 1W
+#     max_full: '7'
+#     verbosity: '1'
+#     minute: '0'
+#     hour: '5'
+#     day: '*'
+#     month: '*'
+#     weekday: '*'
+#     includes:
+#       - /var/lib/foo
+#       - /var/lib/bar
+# @end
 duply_profiles: []
+
+# @var duply_target:description: Target for backups
+# @var duply_target:example: s3://backup.example.com
 duply_target:
 
+# @var duply_default_gpg_key:description: Default GnuPG key
 duply_default_gpg_key: disabled
+
+# @var duply_default_gpg_passwd:description: Default GnuPG password
 duply_default_gpg_passwd:
+
+# @var duply_default_gpg_opts:description: Default GnuPG options
 duply_default_gpg_opts: --pinentry-mode loopback
-duply_default_minute: 5
-duply_default_hour: 5
-duply_default_day: "*"
-duply_default_month: "*"
-duply_default_weekday: "*"
+
+# @var duply_default_minute:description: Default minute cron entry
+duply_default_minute: '5'
+
+# @var duply_default_hour:description: Default hour cron entry
+duply_default_hour: '5'
+
+# @var duply_default_day:description: Default day cron entry
+duply_default_day: '*'
+
+# @var duply_default_month:description: Default month cron entry
+duply_default_month: '*'
+
+# @var duply_default_weekday:description: Default weekday cron entry
+duply_default_weekday: '*'
+
+# @var duply_default_command:description: Default backup command
 duply_default_command: full+purgeFull --force
+
+# @var duply_default_max_age:description: Default max age
 duply_default_max_age: 1M
-duply_default_max_full: 1
-duply_default_verbosity: 1
-duply_default_volsize: 1024
+
+# @var duply_default_max_full:description:  Default max full
+duply_default_max_full: '1'
+
+# @var duply_default_verbosity:description: Default verbosity level
+duply_default_verbosity: '1'
+
+# @var duply_default_volsize:description: Default volume size
+duply_default_volsize: '1024'
+
+# @var duply_default_variables:description: Default variables list
+# @var duply_default_variables:example: >
+# duply_default_variables:
+#   - key: aws_access_key_id
+#     value: S62L74JZVLLKQ5E9077R
+#   - key: aws_secret_access_key
+#     value: xmGiLiTMBGzMMwRh+jAYBvn9C7roiuDqVHDF_+RI
+# @end
 duply_default_variables: []
+
+...

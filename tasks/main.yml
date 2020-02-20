@@ -1,4 +1,6 @@
-- name: install packages
+# Standards: 0.1
+---
+- name: Install required packages
   loop:
     - duply
     - python-paramiko
@@ -12,115 +14,115 @@
   tags:
     - duply
 
-- name: create dir
+- name: Create profile directory
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}'
   file:
-    path: /etc/duply/{{ item.name }}
-    mode: 0700
+    path: '/etc/duply/{{ item.name }}'
+    mode: u=rwx,g=,o=
     state: '{% if item.state | default("present") == "present" %}directory{% else %}absent{% endif %}'
   tags:
     - duply
 
-- name: write config
+- name: Write config file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/conf'
   when: item.state | default("present") == "present"
   template:
     src: config.j2
-    dest: /etc/duply/{{ item.name }}/conf
-    mode: 0600
+    dest: '/etc/duply/{{ item.name }}/conf'
+    mode: u=rw,g=,o=
   tags:
     - duply
 
-- name: drop config
+- name: Delete config file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/conf'
   when: item.state | default("present") == "absent"
   file:
-    path: /etc/duply/{{ item.name }}/conf
+    path: '/etc/duply/{{ item.name }}/conf'
     state: absent
   tags:
     - duply
 
-- name: write exclude
+- name: Write exclude file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/exclude'
   when: item.state | default("present") == "present"
   template:
     src: exclude.j2
-    dest: /etc/duply/{{ item.name }}/exclude
-    mode: 0600
+    dest: '/etc/duply/{{ item.name }}/exclude'
+    mode: u=rw,g=,o=
   tags:
     - duply
 
-- name: drop exclude
+- name: Delete exclude file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/exclude'
   when: item.state | default("present") == "absent"
   file:
-    path: /etc/duply/{{ item.name }}/exclude
+    path: '/etc/duply/{{ item.name }}/exclude'
     state: absent
   tags:
     - duply
 
-- name: write pre
+- name: Write pre file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/pre'
   when: item.pre | default(False)
   copy:
     content: '{{ item.pre }}'
-    dest: /etc/duply/{{ item.name }}/pre
-    mode: 0700
+    dest: '/etc/duply/{{ item.name }}/pre'
+    mode: u=rwx,g=,o=
   tags:
     - duply
 
-- name: drop pre
+- name: Delete pre file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/pre'
-  when: item.pre | default('') == ''
+  when: item.pre | default(True)
   file:
-    path: /etc/duply/{{ item.name }}/pre
+    path: '/etc/duply/{{ item.name }}/pre'
     state: absent
   tags:
     - duply
 
-- name: write post
+- name: Write post file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/post'
   when: item.post | default(False)
   copy:
     content: '{{ item.post }}'
-    dest: /etc/duply/{{ item.name }}/post
-    mode: 0700
+    dest: '/etc/duply/{{ item.name }}/post'
+    mode: u=rwx,g=,o=
   tags:
     - duply
 
-- name: drop post
+- name: Delete post file
   loop: '{{ duply_profiles }}'
   loop_control:
     label: '/etc/duply/{{ item.name }}/post'
-  when: item.post | default('') == ''
+  when: item.post | default(True)
   file:
-    path: /etc/duply/{{ item.name }}/post
+    path: '/etc/duply/{{ item.name }}/post'
     state: absent
   tags:
     - duply
 
-- name: write cronjob
+- name: Create cronjob entry
   loop: '{{ duply_profiles }}'
   loop_control:
-    label: 'name: backup {{ item.name }}, job: {{ item.minute | default(duply_default_minute) }} {{ item.hour | default(duply_default_hour) }} {{ item.day | default(duply_default_day) }} {{ item.month | default(duply_default_month) }} {{ item.weekday | default(duply_default_weekday) }} cronic duply {{ item.name }} {{ item.command | default(duply_default_command) }}'
+    label: '{{ item.name }}'
   cron:
-    name: backup {{ item.name }}
+    name: 'backup {{ item.name }}'
     minute: '{{ item.minute | default(duply_default_minute) }}'
     hour: '{{ item.hour | default(duply_default_hour) }}'
     day: '{{ item.day | default(duply_default_day) }}'
@@ -130,3 +132,5 @@
     state: '{{ item.state | default("present") }}'
   tags:
     - duply
+
+...
