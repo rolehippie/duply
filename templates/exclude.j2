@@ -1,9 +1,9 @@
-{% for exclude_first in item.excludes_first|default([]) -%}
-- {{ exclude_first }}
+{% for exclude in item.excludes_first | default([]) -%}
+- {{ exclude }}
 {% endfor -%}
-{% for include in item.includes|default([]) -%}
+{% for include in item.includes | default([]) -%}
 + {{ include }}
 {% endfor -%}
-{% for exclude in item.excludes|default(["**"]) -%}
+{% for exclude in item.excludes | default(["**"]) -%}
 - {{ exclude }}
 {% endfor -%}
