@@ -234,7 +234,7 @@ s3://backup.example.com
 
 ## Dependencies
 
-None.
+- None
 
 ## License
 
@@ -242,4 +242,4 @@ Apache-2.0
 
 ## Author
 
-Thomas Boerger
+[Thomas Boerger](https://github.com/tboerger)
