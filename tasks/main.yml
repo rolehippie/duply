@@ -9,127 +9,127 @@
     - cronic
     - ftp
   package:
-    name: '{{ item }}'
+    name: "{{ item }}"
     state: present
   tags:
     - duply
 
 - name: Create profile directory
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}'
+    label: "/etc/duply/{{ item.name }}"
   file:
-    path: '/etc/duply/{{ item.name }}'
+    path: "/etc/duply/{{ item.name }}"
     mode: u=rwx,g=,o=
-    state: '{% if item.state | default("present") == "present" %}directory{% else %}absent{% endif %}'
+    state: "{{ 'directory' if item.state | default('present') == 'present' else 'absent' }}"
   tags:
     - duply
 
 - name: Write config file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/conf'
+    label: "/etc/duply/{{ item.name }}/conf"
   when: item.state | default("present") == "present"
   template:
     src: config.j2
-    dest: '/etc/duply/{{ item.name }}/conf'
+    dest: "/etc/duply/{{ item.name }}/conf"
     mode: u=rw,g=,o=
   tags:
     - duply
 
 - name: Delete config file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/conf'
+    label: "/etc/duply/{{ item.name }}/conf"
   when: item.state | default("present") == "absent"
   file:
-    path: '/etc/duply/{{ item.name }}/conf'
+    path: "/etc/duply/{{ item.name }}/conf"
     state: absent
   tags:
     - duply
 
 - name: Write exclude file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/exclude'
+    label: "/etc/duply/{{ item.name }}/exclude"
   when: item.state | default("present") == "present"
   template:
     src: exclude.j2
-    dest: '/etc/duply/{{ item.name }}/exclude'
+    dest: "/etc/duply/{{ item.name }}/exclude"
     mode: u=rw,g=,o=
   tags:
     - duply
 
 - name: Delete exclude file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/exclude'
+    label: "/etc/duply/{{ item.name }}/exclude"
   when: item.state | default("present") == "absent"
   file:
-    path: '/etc/duply/{{ item.name }}/exclude'
+    path: "/etc/duply/{{ item.name }}/exclude"
     state: absent
   tags:
     - duply
 
 - name: Write pre file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/pre'
+    label: "/etc/duply/{{ item.name }}/pre"
   when: item.pre | default(False)
   copy:
-    content: '{{ item.pre }}'
-    dest: '/etc/duply/{{ item.name }}/pre'
+    content: "{{ item.pre }}"
+    dest: "/etc/duply/{{ item.name }}/pre"
     mode: u=rwx,g=,o=
   tags:
     - duply
 
 - name: Delete pre file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/pre'
+    label: "/etc/duply/{{ item.name }}/pre"
   when: item.pre | default(True)
   file:
-    path: '/etc/duply/{{ item.name }}/pre'
+    path: "/etc/duply/{{ item.name }}/pre"
     state: absent
   tags:
     - duply
 
 - name: Write post file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/post'
+    label: "/etc/duply/{{ item.name }}/post"
   when: item.post | default(False)
   copy:
-    content: '{{ item.post }}'
-    dest: '/etc/duply/{{ item.name }}/post'
+    content: "{{ item.post }}"
+    dest: "/etc/duply/{{ item.name }}/post"
     mode: u=rwx,g=,o=
   tags:
     - duply
 
 - name: Delete post file
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '/etc/duply/{{ item.name }}/post'
+    label: "/etc/duply/{{ item.name }}/post"
   when: item.post | default(True)
   file:
-    path: '/etc/duply/{{ item.name }}/post'
+    path: "/etc/duply/{{ item.name }}/post"
     state: absent
   tags:
     - duply
 
 - name: Create cronjob entry
-  loop: '{{ duply_profiles }}'
+  loop: "{{ duply_profiles }}"
   loop_control:
-    label: '{{ item.name }}'
+    label: "{{ item.name }}"
   cron:
-    name: 'backup {{ item.name }}'
-    minute: '{{ item.minute | default(duply_default_minute) }}'
-    hour: '{{ item.hour | default(duply_default_hour) }}'
-    day: '{{ item.day | default(duply_default_day) }}'
-    month: '{{ item.month | default(duply_default_month) }}'
-    weekday: '{{ item.weekday | default(duply_default_weekday) }}'
+    name: "backup {{ item.name }}"
+    minute: "{{ item.minute | default(duply_default_minute) }}"
+    hour: "{{ item.hour | default(duply_default_hour) }}"
+    day: "{{ item.day | default(duply_default_day) }}"
+    month: "{{ item.month | default(duply_default_month) }}"
+    weekday: "{{ item.weekday | default(duply_default_weekday) }}"
     job: cronic duply {{ item.name }} {{ item.command | default(duply_default_command) }}
-    state: '{{ item.state | default("present") }}'
+    state: "{{ item.state | default('present') }}"
   tags:
     - duply
 
