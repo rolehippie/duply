@@ -1,13 +1,16 @@
-# Standards: 0.1
+# Standards: 1.2
 ---
+- name: Include OS vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - ipsec
+
 - name: Install required packages
-  loop:
-    - duply
-    - python-paramiko
-    - python-boto
-    - lftp
-    - cronic
-    - ftp
+  loop: "{{ duploy_packages }}"
   package:
     name: "{{ item }}"
     state: present

@@ -1,0 +1,11 @@
+# Standards: 1.2
+---
+duploy_packages:
+  - duply
+  - python3-paramiko
+  - python3-boto
+  - lftp
+  - cronic
+  - ftp
+
+...
