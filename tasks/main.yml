@@ -1,4 +1,3 @@
-# Standards: 1.2
 ---
 - name: Include OS vars
   include_vars: "{{ item }}"
