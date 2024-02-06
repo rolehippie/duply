@@ -1,6 +1,6 @@
 ---
 - name: Include OS vars
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version }}.yml"
     - "{{ ansible_distribution | lower }}.yml"
@@ -10,7 +10,7 @@
 
 - name: Install required packages
   loop: "{{ duploy_packages }}"
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   tags:
@@ -20,7 +20,7 @@
   loop: "{{ duply_profiles }}"
   loop_control:
     label: "/etc/duply/{{ item.name }}"
-  file:
+  ansible.builtin.file:
     path: "/etc/duply/{{ item.name }}"
     mode: u=rwx,g=,o=
     state: "{{ 'directory' if item.state | default('present') == 'present' else 'absent' }}"
@@ -32,7 +32,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/conf"
   when: item.state | default("present") == "present"
-  template:
+  ansible.builtin.template:
     src: config.j2
     dest: "/etc/duply/{{ item.name }}/conf"
     mode: u=rw,g=,o=
@@ -44,7 +44,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/conf"
   when: item.state | default("present") == "absent"
-  file:
+  ansible.builtin.file:
     path: "/etc/duply/{{ item.name }}/conf"
     state: absent
   tags:
@@ -55,7 +55,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/exclude"
   when: item.state | default("present") == "present"
-  template:
+  ansible.builtin.template:
     src: exclude.j2
     dest: "/etc/duply/{{ item.name }}/exclude"
     mode: u=rw,g=,o=
@@ -67,7 +67,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/exclude"
   when: item.state | default("present") == "absent"
-  file:
+  ansible.builtin.file:
     path: "/etc/duply/{{ item.name }}/exclude"
     state: absent
   tags:
@@ -78,7 +78,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/pre"
   when: item.pre | default(False)
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.pre }}"
     dest: "/etc/duply/{{ item.name }}/pre"
     mode: u=rwx,g=,o=
@@ -90,7 +90,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/pre"
   when: item.pre | default(True)
-  file:
+  ansible.builtin.file:
     path: "/etc/duply/{{ item.name }}/pre"
     state: absent
   tags:
@@ -101,7 +101,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/post"
   when: item.post | default(False)
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.post }}"
     dest: "/etc/duply/{{ item.name }}/post"
     mode: u=rwx,g=,o=
@@ -113,7 +113,7 @@
   loop_control:
     label: "/etc/duply/{{ item.name }}/post"
   when: item.post | default(True)
-  file:
+  ansible.builtin.file:
     path: "/etc/duply/{{ item.name }}/post"
     state: absent
   tags:
@@ -123,7 +123,7 @@
   loop: "{{ duply_profiles }}"
   loop_control:
     label: "{{ item.name }}"
-  cron:
+  ansible.builtin.cron:
     name: "backup {{ item.name }}"
     minute: "{{ item.minute | default(duply_default_minute) }}"
     hour: "{{ item.hour | default(duply_default_hour) }}"

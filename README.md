@@ -215,7 +215,7 @@ duply_profiles:
       - /var/lib/owncloud
   - name: external
     target: ftp://username:p455w0rd@ftp.example.com
-    command: full+verify+purge --force
+    ansible.builtin.command: full+verify+purge --force
     gpg_key: 52DCE5AE1FC80340A33894F5D583668622CDE10E
     gpg_passwd: p455w0rd
     max_age: 1W
