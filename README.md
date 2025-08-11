@@ -1,4 +1,4 @@
-# duply
+# workspace
 
 [![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/duply)
 [![General Workflow](https://github.com/rolehippie/duply/actions/workflows/general.yml/badge.svg)](https://github.com/rolehippie/duply/actions/workflows/general.yml)
@@ -252,7 +252,6 @@ s3://backup.example.com
 **_duply_**
 
 **_ipsec_**
-
 
 ## Dependencies
 
