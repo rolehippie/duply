@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/rolehippie/duply/compare/v2.0.0...v2.1.0) (2025-09-29)
+
+
+### Features
+
+* apply new repo structure and update linting and integrate noble ([cd75a83](https://github.com/rolehippie/duply/commit/cd75a83d141e0baf753aef00f8450aa1664ffaf3))
+
 ## [2.0.0](https://github.com/rolehippie/duply/compare/v1.0.0...v2.0.0) (2024-02-12)
 
 
