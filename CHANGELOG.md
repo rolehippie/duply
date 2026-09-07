@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/rolehippie/duply/compare/v2.4.1...v2.5.0) (2026-09-07)
+
+### Features
+
+* add separate requirements for molecule run ([2114e16](https://github.com/rolehippie/duply/commit/2114e16009e068089c3ade9980349213946fd4e0))
+* use new required facts as attributes ([c6fc2e8](https://github.com/rolehippie/duply/commit/c6fc2e801180a67c467b5450e51aa3ae44feea2b))
+
 ## [2.4.1](https://github.com/rolehippie/duply/compare/v2.4.0...v2.4.1) (2026-08-31)
 
 ### Dependencies
